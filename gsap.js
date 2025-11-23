@@ -310,7 +310,7 @@ document.fonts.ready.then(() => {
 
 
         const cards = el.querySelectorAll(".process_layout > *");
-        const gradients = el.querySelectorAll(".process_gradient");
+        const gradients = el.querySelectorAll(".process_blur");
 
         if (cards.length) {
             tl.from(
@@ -462,15 +462,74 @@ document.fonts.ready.then(() => {
 
     });
 
+     // Events
+    document.querySelectorAll('[data-animation-trigger="events"]').forEach(el => {
+        el.style.visibility = "visible";
+        const delay = getDelay(parseFloat(el.getAttribute("data-animation-delay")) || 0);
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: el,
+                start: getTriggerStart(),
+                once: true
+            },
+            defaults: {
+                ease: main,
+                duration: 1,
+
+            }
+        });
+
+        const heading = el.querySelector(".u-text > *");
+        if (heading) {
+            const split = createSplitText(heading, "chars, lines, words");
+            tl.from(split.lines, {
+                skewY: '6deg',
+                opacity: 0,
+                yPercent: 100,
+                stagger: 0.08
+            }, 0 + delay);
+        }
+
+        const text = el.querySelector('[data-animate="true"] p');
+        if (text) {
+            const split = createSplitText(text, "lines");
+            tl.from(split.lines, {
+                skewY: '2deg',
+                opacity: 0,
+                yPercent: 100,
+                stagger: 0.15
+            },
+                .3 + delay);
+        }
+
+        const btns = el.querySelectorAll(".u-button-wrapper > * > *");
+        if (btns.length) tl.from(btns, {
+            opacity: 0,
+            yPercent: 100,
+            stagger: 0.15
+        },
+            0.3 + delay);
+
+
+        const cards = el.querySelectorAll(".events_img");
+        if (cards.length) tl.from(cards, {
+            opacity: 0,
+            yPercent: 5,
+            stagger: 0.15
+        },
+            0.4 + delay);
+
+    });
+
 });
 
-gsap.fromTo(".process_gradient",
+gsap.fromTo(".process_blur",
     {
-        "--_process-animation---background-position": "0%"
+        "--_process-animation---background-position": "0vw"
     },
     {
-        "--_process-animation---background-position": "100%",
-        duration: 10,
+        "--_process-animation---background-position": "100vw",
+        duration: 5,
         repeat: -1,
         yoyo: true,
         ease: "none"
