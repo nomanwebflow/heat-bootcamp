@@ -405,7 +405,7 @@ document.fonts.ready.then(() => {
     });
 
     // FAQs
-     document.querySelectorAll('[data-animation-trigger="faq"]').forEach(el => {
+    document.querySelectorAll('[data-animation-trigger="faq"]').forEach(el => {
         el.style.visibility = "visible";
         const delay = getDelay(parseFloat(el.getAttribute("data-animation-delay")) || 0);
         const tl = gsap.timeline({
@@ -462,7 +462,73 @@ document.fonts.ready.then(() => {
 
     });
 
-     // Events
+    // Contact
+    document.querySelectorAll('[data-animation-trigger="contact"]').forEach(el => {
+        el.style.visibility = "visible";
+        const delay = getDelay(parseFloat(el.getAttribute("data-animation-delay")) || 0);
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: el,
+                start: getTriggerStart(),
+                once: true
+            },
+            defaults: {
+                ease: main,
+                duration: 1,
+
+            }
+        });
+
+        const heading = el.querySelector(".u-text > *");
+        if (heading) {
+            const split = createSplitText(heading, "chars, lines, words");
+            tl.from(split.lines, {
+                skewY: '6deg',
+                opacity: 0,
+                yPercent: 100,
+                stagger: 0.08
+            }, 0 + delay);
+        }
+
+        const text = el.querySelector('[data-animate="true"] p');
+        if (text) {
+            const split = createSplitText(text, "lines");
+            tl.from(split.lines, {
+                skewY: '2deg',
+                opacity: 0,
+                yPercent: 100,
+                stagger: 0.15
+            },
+                .3 + delay);
+        }
+
+
+        const btns = el.querySelectorAll(".u-button-wrapper > * > *");
+        if (btns.length) tl.from(btns, {
+            opacity: 0,
+            yPercent: 100,
+            stagger: 0.15
+        },
+            0.3 + delay);
+
+        const cards = el.querySelectorAll(".form_fieldset_list > *");
+
+        if (cards.length) {
+            tl.from(
+                cards,
+                {
+                    opacity: 0,
+                    yPercent: 3,
+                    stagger: 0.15,
+                },
+                0.4 + delay
+            );
+        }
+
+
+    });
+
+    // Events
     document.querySelectorAll('[data-animation-trigger="events"]').forEach(el => {
         el.style.visibility = "visible";
         const delay = getDelay(parseFloat(el.getAttribute("data-animation-delay")) || 0);
